@@ -54,10 +54,6 @@ class AssetProvider
 	 */
 	public function link($file, ?string $modifierName = NULL, ...$args)
 	{
-		if (!file_exists($file)) {
-			return "#file not exists";
-		}
-
 		$fileInfo = new File($file);
 		if ($modifierName) {
 			$modifier = $this->getModifier($modifierName);
@@ -65,6 +61,10 @@ class AssetProvider
 				throw AssetsException::notInstalledModifier($modifierName);
 			}
 			$modifier->modify($this, $fileInfo, $args);
+		}
+
+		if (!file_exists($fileInfo->getFileInfo()->getPathname())) {
+			return "#file not exists";
 		}
 
 		$linkedFile = $fileInfo->getFileLink();
