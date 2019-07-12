@@ -49,11 +49,15 @@ class AssetProvider
 	 * @param string|AssetFile|\SplFileInfo $file
 	 * @param string|null $modifierName
 	 * @param array ...$args
-	 * @return Url
+	 * @return Url|string
 	 * @throws AssetsException
 	 */
-	public function link($file, ?string $modifierName = NULL, ...$args): Url
+	public function link($file, ?string $modifierName = NULL, ...$args)
 	{
+		if (!file_exists($file)) {
+			return "#file not exists";
+		}
+
 		$fileInfo = new File($file);
 		if ($modifierName) {
 			$modifier = $this->getModifier($modifierName);
