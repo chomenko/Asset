@@ -50,10 +50,10 @@ class AssetProvider
 	 * @param string|AssetFile|\SplFileInfo $file
 	 * @param string|null $modifierName
 	 * @param array ...$args
-	 * @return Url
+	 * @return Url|string
 	 * @throws AssetsException
 	 */
-	public function link($file, ?string $modifierName = NULL, ...$args): Url
+	public function link($file, ?string $modifierName = NULL, ...$args)
 	{
 		$fileInfo = new File($file);
 		if ($modifierName) {
@@ -62,6 +62,10 @@ class AssetProvider
 				throw AssetsException::notInstalledModifier($modifierName);
 			}
 			$modifier->modify($this, $fileInfo, $args);
+		}
+
+		if (!file_exists($fileInfo->getFileInfo()->getPathname())) {
+			return "#file not exists";
 		}
 
 		$linkedFile = $fileInfo->getFileLink();
