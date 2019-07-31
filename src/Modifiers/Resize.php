@@ -15,11 +15,11 @@ class Resize extends Modifier
 {
 
 	private $flags = [
-		"shrink" =>  Image::SHRINK_ONLY,
-		"stretch" =>  Image::STRETCH,
-		"fit" =>  Image::FIT,
-		"fill" =>  Image::FILL,
-		"exact" =>  Image::EXACT,
+		"shrink" => Image::SHRINK_ONLY,
+		"stretch" => Image::STRETCH,
+		"fit" => Image::FIT,
+		"fill" => Image::FILL,
+		"exact" => Image::EXACT,
 	];
 
 	/**
@@ -46,15 +46,28 @@ class Resize extends Modifier
 		}
 
 		$fileName = AssetProvider::formatAssetFileName($fileInfo, [
-			$width . "x" . $height, $flag,
+			$width . "x" . $height,
+			$flag,
 		]);
 
 		$filePathname = $assetDir . "/" . $fileName;
 
 		if (!file_exists($filePathname) || filemtime($filePathname) !== $fileInfo->getMTime()) {
+			$ext = strtolower(pathinfo($fileInfo, PATHINFO_EXTENSION));
+			switch ($ext) {
+				case $ext == "jpeg" || $ext == "jpg":
+					$type = Image::JPEG;
+					break;
+				case "gif":
+					$type = Image::GIF;
+					break;
+				default:
+					$type = Image::PNG;
+			}
+
 			$image = Image::fromFile($fileInfo);
 			$image->resize($width, $height, $flag);
-			$image->save($filePathname);
+			$image->save($filePathname, 100, $type);
 			touch($filePathname, $fileInfo->getMTime());
 		}
 

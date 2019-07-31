@@ -29,6 +29,7 @@ class AssetProvider
 	 * @var IRequest
 	 */
 	private $request;
+
 	/**
 	 * @var Container
 	 */
