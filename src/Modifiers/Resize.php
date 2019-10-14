@@ -35,6 +35,10 @@ class Resize extends Modifier
 			throw new AssetsException('Modifier resize required 2 parameters $height and $width');
 		}
 
+		if (!file_exists($file->getOrigin())) {
+			$file->setFileInfo(new \SplFileInfo(__DIR__ . "/image_not_found.png"));
+		}
+
 		$width = $args[0];
 		$height = $args[1];
 		$fileInfo = $file->getFileInfo();

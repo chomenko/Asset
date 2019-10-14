@@ -28,9 +28,10 @@ class File
 
 	/**
 	 * @param string|AssetFile|\SplFileInfo $file
+	 * @param bool $throw
 	 * @throws AssetsException
 	 */
-	public function __construct($file)
+	public function __construct($file, bool $throw = TRUE)
 	{
 		$this->origin = $file;
 		if (is_object($file) && !$file instanceof AssetFile && !$file instanceof \SplFileInfo) {
@@ -46,7 +47,7 @@ class File
 		}
 
 		if (is_string($file)) {
-			if (!file_exists($file)) {
+			if (!file_exists($file) && $throw) {
 				throw AssetsException::fileDoesNotExist($file);
 			}
 			$this->fileInfo = new \SplFileInfo($file);

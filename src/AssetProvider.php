@@ -55,13 +55,19 @@ class AssetProvider
 	 */
 	public function link($file, ?string $modifierName = NULL, ...$args)
 	{
-		$fileInfo = new File($file);
+		$modifier = FALSE;
 		if ($modifierName) {
 			$modifier = $this->getModifier($modifierName);
 			if (!$modifier) {
 				throw AssetsException::notInstalledModifier($modifierName);
 			}
+		}
+
+		if ($modifier) {
+			$fileInfo = new File($file, FALSE);
 			$modifier->modify($this, $fileInfo, $args);
+		} else {
+			$fileInfo = new File($file);
 		}
 
 		if (!file_exists($fileInfo->getFileInfo()->getPathname())) {
