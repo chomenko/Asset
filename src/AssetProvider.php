@@ -37,7 +37,8 @@ class AssetProvider
 
 	/**
 	 * @param Config $config
-	 * @param Url $request
+	 * @param IRequest $request
+	 * @param Container $container
 	 */
 	public function __construct(Config $config, IRequest $request, Container $container)
 	{
@@ -93,8 +94,7 @@ class AssetProvider
 		$url = clone $this->request->getUrl();
 		$url->setQuery("");
 		$url->setPath($path);
-
-		if (isset($modifier)) {
+		if ($modifier !== FALSE) {
 			$modifier->linking($this, $url, $fileInfo, $args);
 		}
 
