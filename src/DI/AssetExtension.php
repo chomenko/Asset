@@ -22,7 +22,7 @@ class AssetExtension extends CompilerExtension
 {
 
 	const TAG_MODIFIER = 'asset.modifier';
-	const KEY_PROVIDER = '@asset.provider';
+	const KEY_PROVIDER = 'assetprovider';
 
 	/**
 	 * @var array
